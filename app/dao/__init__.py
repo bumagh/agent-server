@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from app.model import init_model
-from app.dao.esDAO import ElasticsearchDAO
-
+from werkzeug.utils import cached_property
 
 class DaoPool:
     sqlDAO = None
@@ -16,8 +15,5 @@ class DaoPool:
         self.sqlDAO = SQLAlchemy(app)
         init_model(self.sqlDAO)
 
-        self.esDAO = ElasticsearchDAO(app.config['ELASTICSEARCH_HOST'], \
-                                      app.config['ELASTICSEARCH_PORT'])
 
-
-daoPool = DaoPool
+daoPool = DaoPool()

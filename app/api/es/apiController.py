@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 import json, re
 import os
-
 from flask_restplus import reqparse, Resource, Api, fields, Namespace, abort
-from flask import request, session, make_response, redirect, Response
-from elasticsearch_dsl import Q, A, Search
 
 from app.util.regToolBox import RegToolBox
 from app.util.exceptionHandler import ExcepitonHandler

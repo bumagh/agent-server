@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from elasticsearch_dsl import Q, A, Search
 from flask_restplus import reqparse, Resource, Api, fields, Namespace, abort
 import json, re
 import os

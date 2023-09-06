@@ -7,7 +7,6 @@ from flask import request, session, make_response, redirect, Response
 
 from app.util.regToolBox import RegToolBox
 from app.util.exceptionHandler import ExcepitonHandler
-from app.oauth import googleOauthService
 
 
 api = Namespace('oauth', description='Oauth operation')

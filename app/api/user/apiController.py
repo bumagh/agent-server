@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import os
-from elasticsearch_dsl import Q, A, Search
-from elasticsearch_dsl.query import  Match
 from flask_restplus import reqparse, Resource, Api, fields, Namespace
 
 from .model import ApiModel
