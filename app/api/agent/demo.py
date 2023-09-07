@@ -4,7 +4,7 @@
 from flask import Blueprint
 from app.libs.error_code import Success
 
-demo = Blueprint('demo', __name__, url_prefix='/demo')
+demo = Blueprint('demo', __name__)
 
 
 @demo.route('/test', methods=['GET'])
