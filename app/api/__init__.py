@@ -1,20 +1,12 @@
-from flask_restplus import Api, Namespace
-
-from app.api.cve.apiController import api as ns1
-from app.api.user.apiController import api as ns2
-from app.api.oauth.apiController import api as ns3
-from app.api.es.apiController import api as ns4
+from flask import Blueprint
+from werkzeug.utils import find_modules, import_string
 
 
-api = Api(version='2.2', \
-            title='Flask Restful plus Api', \
-            doc='/api', \
-            description='Document for Restful api', \
-            contact='tsungwu@cyber00rn.org', \
-            default='tweet')
+def register_blueprint(folder, app):
+    for name in find_modules(folder, recursive=True):
+        module = import_string(name)
+        n = name.split('.')[-1]
+        if hasattr(module, n) and isinstance(getattr(module, n), Blueprint):
+            app.register_blueprint(getattr(module, n))
 
 
-api.add_namespace(ns1, path='/api/cves')
-api.add_namespace(ns2, path='/api/users')
-api.add_namespace(ns3, path='/api/oauth')
-api.add_namespace(ns4, path='/api/es')
