@@ -6,9 +6,7 @@
 
 from flask import request, _request_ctx_stack
 from wtforms import BooleanField, StringField, IntegerField, PasswordField, FileField, FieldList
-from wtforms.validators import DataRequired, ValidationError, length, Email, Regexp, EqualTo, Optional, \
-    NumberRange
-
+from wtforms.validators import DataRequired, ValidationError, length, Regexp, EqualTo, Optional, NumberRange
 from app.libs.enums import ClientTypeEnum
 from app.core.validator import BaseValidator
 
@@ -121,23 +119,8 @@ class ChangePasswordValidator(ResetPasswordValidator):
     old_password = PasswordField('原密码', validators=[DataRequired(message='不可为空')])
 
 
-class UserEmailValidator(ClientValidator):
-    account = StringField(validators=[Email(message='无效email')])
-    secret = StringField(validators=[
-        DataRequired(),
-        # password can only include letters, numbers and "_"
-        Regexp(r'^[A-Za-z0-9_*&$#@]{6,22}$')
-    ])
-    nickname = StringField(validators=[
-        DataRequired(),
-        length(min=2, max=22)
-    ])
-
-
 class UpdateUserValidator(BaseValidator):
     username = StringField(validators=[length(min=2, max=10, message='用户名长度必须在2~10之间'), Optional()])
-
-    email = StringField(validators=[Email(message='无效email'), Optional()])
     mobile = StringField(validators=[
         length(min=11, max=11, message='手机号为11个数字'),
         Regexp(r'^1(3|4|5|7|8)[0-9]\d{8}$'),
@@ -170,7 +153,8 @@ class CreateAdminValidator(CreatePasswordValidator):
         NumberRange(message='分组id必须大于0', min=1)
     ])
     email = StringField('电子邮件', validators=[
-        Regexp(r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$', message='电子邮箱不符合规范，请输入正确的邮箱'),
+        Regexp(r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$',
+               message='电子邮箱不符合规范，请输入正确的邮箱'),
         Optional()
     ])
     mobile = StringField('手机号', validators=[
