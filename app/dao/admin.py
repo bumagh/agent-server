@@ -8,6 +8,9 @@ from app.model.baAdmin import BaAdmin
 
 __author__ = 'Allen7D'
 
+from app.model.baAdminGroup import BaAdminGroup
+from app.model.baAdminGroupAccess import BaAdminGroupAccess
+
 
 class AdminDao():
     # 更改密码
@@ -93,7 +96,7 @@ class AdminDao():
                             identifier=identifier, credential=credential)
         else:
             BaAdmin.create(commit=commit, user_id=user_id, type=type,
-                         identifier=identifier, credential=credential)
+                           identifier=identifier, credential=credential)
 
     # 删除用户
     @staticmethod
@@ -112,7 +115,13 @@ class AdminDao():
     # 获取用户列表
     @staticmethod
     def get_admin_list(page, size):
-        paginator = BaAdmin.query.paginate(page=page, per_page=size, error_out=True)
+        paginator = db.session.query(BaAdmin.id, BaAdmin.username, BaAdmin.nickname, BaAdmin.avatar, BaAdmin.email,
+                                     BaAdmin.mobile, BaAdmin.last_login_time, BaAdmin.last_login_ip, BaAdmin.motto,
+                                     BaAdmin.status, BaAdmin.update_time, BaAdmin.create_time, BaAdminGroup.id,
+                                     BaAdminGroup.name).select_from(BaAdmin) \
+            .join(BaAdminGroupAccess, BaAdmin.id == BaAdminGroupAccess.uid) \
+            .join(BaAdminGroup, BaAdminGroup.id == BaAdminGroupAccess.group_id) \
+            .paginate(page=page, per_page=size, error_out=True)
         return {
             'total': paginator.total,
             'current_page': paginator.page,

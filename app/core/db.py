@@ -208,8 +208,8 @@ class JSONSerializerMixin(object):
             except ValueError:
                 pass
         # 处理时间(时间戳转化)
-        if item in ['create_time', 'update_time', 'delete_time']:
-            attr = strftime('%Y-%m-%d %H:%M:%S', localtime(attr))
+        # if item in ['create_time', 'update_time', 'delete_time']:
+        #     attr = strftime('%Y-%m-%d %H:%M:%S', localtime(attr))
         return attr
 
     def hide(self, *keys):

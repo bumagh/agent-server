@@ -15,3 +15,9 @@ def get_user_list():
     page, size = paginate()
     rv = AdminDao.get_admin_list(page, size)
     return Success(rv)
+
+@admin.route('/<int:uid>', methods=['GET'])
+def get_user(uid):
+    '''查询用户信息'''
+    user = AdminDao.query.filter_by(id=uid).first_or_404()
+    return Success(user)
