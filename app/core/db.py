@@ -14,8 +14,6 @@ from sqlalchemy import Column, Integer, orm, inspect
 from app.libs.error_code import NotFound, RepeatException
 from app.libs.enums import UrlFromEnum
 
-__author__ = 'Allen7D'
-
 
 def on_update_time():
     now = datetime.now

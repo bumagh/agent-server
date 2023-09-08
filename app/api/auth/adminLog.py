@@ -10,5 +10,7 @@ adminLog = Blueprint('adminLog', __name__, url_prefix='/auth.AdminLog')
 @adminLog.route("/index", methods=['GET'])
 def admin_log():
     limit = request.args.get('limit', type=int)
+    print(limit)
     page = request.args.get('page', type=int)
-    return Success("limit=%s and page = %s" % limit, page)
+    print(page)
+    return Success("limit={} and page = {}".format(limit, page))
