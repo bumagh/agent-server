@@ -7,6 +7,7 @@ from app.core.db import BaseModel as Base
 
 
 class BaAdmin(Base):
+    __tablename__ = 'ba_admin'
     id = Column(Integer, primary_key=True)
     username = Column(Integer, nullable=False, comment='用户名')
     nickname = Column(String(60), comment='昵称')

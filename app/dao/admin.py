@@ -4,7 +4,7 @@
 """
 from app.core.db import db
 from app.libs.enums import ClientTypeEnum
-from app.model.ba_admin import BaAdmin
+from app.model.baAdmin import BaAdmin
 
 __author__ = 'Allen7D'
 
