@@ -460,3 +460,17 @@ class UpdateConfigValidator(BaseValidator):
 
 class UpdateConfigValueValidator(BaseValidator):
     value = StringField(validators=[DataRequired()])
+
+
+# 创建菜单规则校验
+class CreateAdminMenuRuleValidator(BaseValidator):
+    pid = IntegerField(validators=[
+        DataRequired(message="上级菜单不能为空")
+    ])
+    type = StringField(validators=DataRequired)
+    title = StringField(validators=DataRequired)
+    menu_type = StringField(validators=DataRequired)
+    icon = StringField(validators=DataRequired)
+    name = StringField(validators=DataRequired)
+    status = StringField(validators=DataRequired)
+    keepalive = IntegerField(validators=DataRequired)

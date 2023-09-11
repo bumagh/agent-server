@@ -249,7 +249,8 @@ class BaseModel(CRUDMixin, AbortMixin, JSONSerializerMixin, db.Model):
     '''基础类，基础的crud model
     '''
     __abstract__ = True  # 这将使这个基类不生成实际的数据库表
-
+    create_time = Column('create_time', Integer, comment='创建时间')
+    update_time = Column('update_time', Integer, onupdate=on_update_time, comment='更新时间')
 
     def delete(self, commit=True):
         '''删除'''

@@ -4,8 +4,6 @@ from flask import Blueprint, request
 from app.core.error import ParameterException
 from app.dao.MenuRuleDAO import MeunRuleDAO
 from app.libs.error_code import Success
-from app.dao.AdminLogDAO import AdminLogDAO
-from app.core.utils import paginate
 from app.model.MenuRuleModel import BaAdminRule
 
 menuRule = Blueprint('menuRule', __name__, url_prefix='/auth.Rule')
@@ -14,7 +12,8 @@ menuRule = Blueprint('menuRule', __name__, url_prefix='/auth.Rule')
 # 首页查询接口
 @menuRule.route("/index", methods=['GET'])
 def index():
-    tree = MeunRuleDAO.index()
+    quickSearch = request.args.get("quickSearch")
+    tree = MeunRuleDAO.index(quickSearch)
     return Success(tree)
 
 
@@ -31,26 +30,17 @@ def get_one_obj():
     return Success(data_str)
 
 
+# 更新数据接口
 @menuRule.route("/edit", methods=['POST'])
 def update_rule():
-    id = request.args.get("id", type=int)
-    data = BaAdminRule.query.get(id)
-    data_str = {
-        "row": data
-    }
-    return Success(data_str)
-
-
-# 新增接口
-@menuRule.route("/add", methods=['POST'])
-def add_rule():
-    data = request.json()
+    data = request.get_json()
     extend = data['extend']
     icon = data['icon']
     keepalive = data['keepalive']
     menu_type = data['menu_type']
     name = data['name']
     pid = data['pid']
+    id = data['id']
     remark = data['remark']
     status = data['status']
     title = data['title']
@@ -59,10 +49,18 @@ def add_rule():
     return Success()
 
 
+# 新增接口
+@menuRule.route("/add", methods=['POST'])
+def add_rule():
+    data = request.get_json()
+    MeunRuleDAO.add_menu_rule(data)
+    return Success()
+
+
 # 排序接口,实际上就是对调权重
 @menuRule.route("/sortable", methods=['POST'])
 def sortable():
-    data = request.json()
+    data = request.get_json()
     id = data['id']
     targetId = data['targetId']
     if id is None or targetId is None:
@@ -70,8 +68,9 @@ def sortable():
     origin_rule = BaAdminRule.query.get(id)
     target_rule = BaAdminRule.query.get(targetId)
     # 交换weigh
+    tmp = origin_rule.weigh
     origin_rule.update(weigh=target_rule.weigh)
-    target_rule.update(weigh=origin_rule.weigh)
+    target_rule.update(weigh=tmp)
     return Success()
 
 
@@ -92,4 +91,3 @@ def delete():
 
     return Success()
 
-# 更新数据接口

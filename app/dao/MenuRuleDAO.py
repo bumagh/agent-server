@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
+from app import db
 from app.model.MenuRuleModel import BaAdminRule
 
 
 class MeunRuleDAO():
 
     @staticmethod
-    def index():
-        results = BaAdminRule.query.all()
+    def index(quickSearch):
+        results = {}
+        if quickSearch is None:
+            results = BaAdminRule.query.all()
+        else:
+            results = BaAdminRule.query.filter(BaAdminRule.title.like(u'%{}%'.format(quickSearch))).all()
         trees = []
         for result in results:
             my_dict = {'id': result.id, 'pid': result.pid, 'type': result.type, 'title': result.title,
@@ -28,3 +33,8 @@ class MeunRuleDAO():
         return {
             'list': trees
         }
+    @staticmethod
+    def add_menu_rule(form):
+        model = BaAdminRule(**form)
+        db.session.add(model)
+        db.session.commit()
