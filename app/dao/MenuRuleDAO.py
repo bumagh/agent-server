@@ -14,6 +14,7 @@ class MeunRuleDAO():
                        'url': result.url, 'component': result.component, 'keepalive': result.keepalive,
                        'extend': result.extend, 'remark': result.remark, 'weigh': result.weigh, 'status': result.status,
                        'update_time': result.update_time, 'create_time': result.create_time}
+            # my_dict = dict(vars(result))
             if result.pid == 0:
                 trees.append(my_dict)
             else:
