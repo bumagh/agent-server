@@ -2,7 +2,7 @@
 import logging
 import os
 
-from flask import Flask
+from flask import Flask, request, make_response, current_app
 from app.core.db import db
 from app.core.error import APIException, ServerError, RepeatException
 from werkzeug.exceptions import HTTPException
@@ -45,6 +45,17 @@ def create_app(flask_config_name=None):
     register_blueprint('app.api', app)
     register_plugin(app)
 
+    # @app.before_request
+    # def before_request_func():
+    #     print "请求前置处理"
+    #     print request.url
+
+    # @app.after_request
+    # def after_request_func(resp):
+    #     res = make_response(resp)
+    #     print "请求后置处理"
+    #     return res
+
     return app
 
 
@@ -58,7 +69,6 @@ def register_plugin(app):
     apply_default_view(app)  # 应用默认路由
     if app.config['DEBUG']:
         apply_request_log(app)  # 打印请求日志
-
 
 def set_logger(app):
     # logging.getLogger('flask_cors').level = logging.DEBUG

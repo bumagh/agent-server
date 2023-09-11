@@ -7,7 +7,6 @@ from datetime import datetime
 from time import localtime, strftime
 
 from flask import current_app, json, request
-import pymysql
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, Pagination as _Pagination, BaseQuery
 from sqlalchemy import Column, Integer, orm, inspect
 
@@ -100,7 +99,6 @@ class Query(BaseQuery):
                           paginator.total,
                           paginator.items
                           )
-
 
 db = SQLAlchemy(query_class=Query)
 
@@ -210,8 +208,8 @@ class JSONSerializerMixin(object):
             except ValueError:
                 pass
         # 处理时间(时间戳转化)
-        if item in ['create_time', 'update_time', 'delete_time']:
-            attr = strftime('%Y-%m-%d %H:%M:%S', localtime(attr))
+        # if item in ['create_time', 'update_time', 'delete_time']:
+        #     attr = strftime('%Y-%m-%d %H:%M:%S', localtime(attr))
         return attr
 
     def hide(self, *keys):
@@ -250,7 +248,8 @@ class JSONSerializerMixin(object):
 class BaseModel(CRUDMixin, AbortMixin, JSONSerializerMixin, db.Model):
     '''基础类，基础的crud model
     '''
-    __abstract__ = True
+    __abstract__ = True  # 这将使这个基类不生成实际的数据库表
+
 
     def delete(self, commit=True):
         '''删除'''
