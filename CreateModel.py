@@ -60,7 +60,7 @@ def create_model(table_name, connection):
         if col[3] == 'UNI':
             str += 'unique=True,'
 
-        str += "comment='{}',".format(full_columns[index][8])
+        str += "comment='{}',".format(full_columns[index+1][8])
 
         str = str[:-1]
         str += ')\n'

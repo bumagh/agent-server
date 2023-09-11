@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from app import db
+from sqlalchemy import Column, Integer, String, Text
+from app.core.db import BaseModel as Base
 
-class AdminLog(db.Model):
+class AdminLog(Base):
     __tablename__ = 'ba_admin_log'
     id = Column(Integer, primary_key=True, autoincrement=True)
     admin_id = Column(Integer, nullable=False, comment='ID')

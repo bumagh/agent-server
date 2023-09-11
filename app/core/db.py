@@ -257,6 +257,7 @@ class BaseModel(CRUDMixin, AbortMixin, JSONSerializerMixin, db.Model):
         if commit:
             db.session.commit()
 
+
     def _set_fields(self):
         self._exclude = []
 
