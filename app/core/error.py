@@ -2,6 +2,8 @@
 """
   Created by Allen7D on 2018/6/12.
 """
+import time
+
 from flask import request, json
 from app.core.utils import jsonify
 from werkzeug.exceptions import HTTPException
@@ -26,7 +28,8 @@ class APIException(HTTPException):
     def get_body(self, environ=None):
         body = dict(
             msg=self.msg,
-            error_code=self.error_code,
+            code=self.error_code,
+            time=time.time(),
             request_url=request.method + ' ' + self.get_url_no_param()
         )
         text = json.dumps(body)  # 返回文本
@@ -69,7 +72,8 @@ class Success(APIException):
 
     def get_body(self, environ=None):
         body = dict(
-            error_code=self.error_code,
+            code=self.error_code,
+            time=int(time.time()),
             msg=self.msg,
             data=self.data
         )
@@ -149,6 +153,7 @@ class FileExtensionException(APIException):
     code = 401
     msg = '文件扩展名不符合规范'
     error_code = 10330
+
 
 class QiniuExcepition(APIException):
     code = 401

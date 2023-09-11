@@ -5,6 +5,7 @@ from flask import Blueprint
 from app.core.error import Success
 from app.core.utils import paginate
 from app.dao.admin import AdminDao
+from app.service.admin import AdminService
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -14,7 +15,9 @@ def get_user_list():
     '''查询用户列表(分页)'''
     page, size = paginate()
     rv = AdminDao.get_admin_list(page, size)
+    rv = AdminService.option_group_field(rv)
     return Success(rv)
+
 
 @admin.route('/<int:uid>', methods=['GET'])
 def get_user(uid):

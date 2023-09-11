@@ -6,10 +6,7 @@ from app.core.db import db
 from app.libs.enums import ClientTypeEnum
 from app.model.baAdmin import BaAdmin
 
-__author__ = 'Allen7D'
-
-from app.model.baAdminGroup import BaAdminGroup
-from app.model.baAdminGroupAccess import BaAdminGroupAccess
+from app.dao.admin_group_access import AdminGroupAccessDao
 
 
 class AdminDao():
@@ -117,10 +114,7 @@ class AdminDao():
     def get_admin_list(page, size):
         paginator = db.session.query(BaAdmin.id, BaAdmin.username, BaAdmin.nickname, BaAdmin.avatar, BaAdmin.email,
                                      BaAdmin.mobile, BaAdmin.last_login_time, BaAdmin.last_login_ip, BaAdmin.motto,
-                                     BaAdmin.status, BaAdmin.update_time, BaAdmin.create_time, BaAdminGroup.id,
-                                     BaAdminGroup.name).select_from(BaAdmin) \
-            .join(BaAdminGroupAccess, BaAdmin.id == BaAdminGroupAccess.uid) \
-            .join(BaAdminGroup, BaAdminGroup.id == BaAdminGroupAccess.group_id) \
+                                     BaAdmin.status, BaAdmin.update_time, BaAdmin.create_time) \
             .paginate(page=page, per_page=size, error_out=True)
         return {
             'total': paginator.total,
