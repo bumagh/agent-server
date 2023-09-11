@@ -3,7 +3,7 @@
 
 from sqlalchemy import Column, Integer, String
 
-from app.core.db import BaseModel as Base
+from app.core.db import EntityModel as Base
 
 
 class BaAdmin(Base):

@@ -7,6 +7,7 @@ from app.libs.enums import ClientTypeEnum
 from app.model.baAdmin import BaAdmin
 
 from app.dao.admin_group_access import AdminGroupAccessDao
+from app.model.baAdminGroupAccess import BaAdminGroupAccess
 
 
 class AdminDao():
@@ -72,42 +73,22 @@ class AdminDao():
                     commit=False, user_id=uid, identifier=item['identifier'], credential=credential, type=item['type']
                 )
 
-    # 更新头像
+    # 新增用户
     @staticmethod
-    def set_avatar(id, avatar):
-        '''
-        :param id: 用户id
-        :param avatar: 头像url
-        :return:
-        '''
-        with db.auto_commit():
-            user = BaAdmin.get(id=id)
-            user._avatar = avatar
+    def create_admin(data_dict):
+        group_arr = data_dict['group_arr']
+        # 删除字段
+        if 'group_arr' in data_dict:
+            del data_dict['group_arr']
+        new_user = BaAdmin(**data_dict)
+        db.session.add(new_user)
+        db.session.commit()
+        uid = new_user.id
+        for group_id in group_arr:
+            user_group_access = BaAdminGroupAccess(uid, group_id)
+            db.session.add(user_group_access)
+            db.session.commit()
 
-    # 更新身份
-    @staticmethod
-    def update_identity(commit=True, user_id=None, identifier=None, credential=None, type=None):
-        identity = BaAdmin.get(user_id=user_id, type=type)
-        if identity:
-            identity.update(commit=commit,
-                            identifier=identifier, credential=credential)
-        else:
-            BaAdmin.create(commit=commit, user_id=user_id, type=type,
-                           identifier=identifier, credential=credential)
-
-    # 删除用户
-    @staticmethod
-    def delete_user(uid):
-        user = BaAdmin.query.filter_by(id=uid).first_or_404()
-        with db.auto_commit():
-            BaAdmin.query.filter_by(user_id=user.id).delete(commit=False)
-            user.delete(commit=False)
-
-    # 更换权限组
-    @staticmethod
-    def change_group(uid, group_id):
-        user = BaAdmin.get_or_404(id=uid)
-        user.update(group_id=group_id)
 
     # 获取用户列表
     @staticmethod
@@ -122,15 +103,9 @@ class AdminDao():
             'items': paginator.items
         }
 
-    # 获取加密后的密码
+    # 删除用户
     @staticmethod
-    def get_credential(uid):
-        credential, = db.session.query(BaAdmin._credential).filter(
-            BaAdmin.id == uid,
-            BaAdmin.type.in_([
-                ClientTypeEnum.USERNAME.value,
-                ClientTypeEnum.EMAIL.value,
-                ClientTypeEnum.MOBILE.value]),
-            BaAdmin._credential != None
-        ).first()
-        return credential
+    def delete_element(ids):
+        with db.auto_commit():
+            BaAdmin.query.filter(BaAdmin.id.in_(ids)).delete()
+            BaAdminGroupAccess.filter(BaAdminGroupAccess.uid.in_(ids)).delete()

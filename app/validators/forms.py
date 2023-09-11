@@ -96,12 +96,13 @@ class TokenValidator(BaseValidator):
 
 # 注册时，密码校验
 class CreatePasswordValidator(BaseValidator):
-    password = PasswordField('新密码', validators=[
-        DataRequired(message='新密码不可为空'),
-        Regexp(r'^[A-Za-z0-9_*&$#@]{6,22}$', message='密码长度必须在6~22位之间，包含字符、数字和 _ '),
-        EqualTo('confirm_password', message='两次输入的密码不一致，请输入相同的密码')
-    ])
-    confirm_password = PasswordField('确认新密码', validators=[DataRequired(message='请确认密码')])
+    pass
+    # password = PasswordField('新密码', validators=[
+    #     DataRequired(message='新密码不可为空'),
+    #     Regexp(r'^[A-Za-z0-9_*&$#@]{6,22}$', message='密码长度必须在6~22位之间，包含字符、数字和 _ '),
+    #     EqualTo('confirm_password', message='两次输入的密码不一致，请输入相同的密码')
+    # ])
+    # confirm_password = PasswordField('确认新密码', validators=[DataRequired(message='请确认密码')])
 
 
 # 重置密码校验
@@ -148,10 +149,9 @@ class CreateAdminValidator(CreatePasswordValidator):
         DataRequired(message='用户名不可为空'),
         length(min=2, max=10, message='用户名长度必须在2~10之间')])
 
-    group_id = IntegerField('分组id', validators=[
-        DataRequired(message='请输入分组id'),
-        NumberRange(message='分组id必须大于0', min=1)
-    ])
+    group_arr = FieldList(StringField('分组id', validators=[
+        DataRequired(message='请输入分组id')
+    ]))
     email = StringField('电子邮件', validators=[
         Regexp(r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$',
                message='电子邮箱不符合规范，请输入正确的邮箱'),

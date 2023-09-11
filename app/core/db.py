@@ -268,14 +268,13 @@ class EntityModel(CRUDMixin, AbortMixin, JSONSerializerMixin, db.Model):
     __abstract__ = True
     create_time = Column('create_time', Integer, comment='创建时间')
     update_time = Column('update_time', Integer, onupdate=on_update_time, comment='更新时间')
-    delete_time = Column('delete_time', Integer, comment='删除时间')
 
     def __init__(self):
         # 时间戳
         self.create_time = int(round(datetime.now().timestamp()))
 
     def _set_fields(self):
-        self._exclude = ['create_time', 'update_time', 'delete_time']
+        self._exclude = ['create_time', 'update_time']
 
     @property
     def create_datetime(self):
