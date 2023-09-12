@@ -7,14 +7,14 @@ class AdminService():
     @staticmethod
     def option_group_field(item):
         itmes = list()
-        for u in item['items']:
+        for u in item.items:
             row_dict = dict(u)
             groupid, groupname = AdminGroupAccessDao.get_user_admin_group_info(row_dict['id'])
-            row_dict['groupid'] = groupid
-            row_dict['groupname'] = groupname
+            row_dict['group_arr'] = groupid
+            row_dict['group_name_arr'] = groupname
             itmes.append(row_dict)
         return {
-            'total': item['total'],
-            'current_page': item['current_page'],
-            'items': itmes
+            'total': item.total,
+            'remark': "",
+            'list': itmes
         }

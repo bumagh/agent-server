@@ -90,11 +90,13 @@ class AdminDao():
                                      BaAdmin.mobile, BaAdmin.last_login_time, BaAdmin.last_login_ip, BaAdmin.motto,
                                      BaAdmin.status, BaAdmin.update_time, BaAdmin.create_time) \
             .paginate(page=page, per_page=size, error_out=True)
-        return {
-            'total': paginator.total,
-            'current_page': paginator.page,
-            'items': paginator.items
-        }
+        return paginator
+
+        # {
+        #     'total': paginator.total,
+        #     'current_page': paginator.page,
+        #     'list': paginator.items
+        # }
 
     # 删除用户
     @staticmethod
