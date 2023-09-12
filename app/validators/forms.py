@@ -1,6 +1,5 @@
 # _*_ coding: utf-8 _*_
 """
-  Created by Allen7D on 2018/5/31.
   参数校验
 """
 
@@ -9,9 +8,6 @@ from wtforms import BooleanField, StringField, IntegerField, PasswordField, File
 from wtforms.validators import DataRequired, ValidationError, length, Regexp, EqualTo, Optional, NumberRange
 from app.libs.enums import ClientTypeEnum
 from app.core.validator import BaseValidator
-
-__author__ = 'Allen7D'
-
 
 ########## 基础公用的参数校验器 ##########
 # id必须为正整数

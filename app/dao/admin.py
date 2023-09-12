@@ -96,10 +96,11 @@ class AdminDao():
 
     # 获取用户列表
     @staticmethod
-    def get_admin_list(page, size):
+    def get_admin_list(page, size, name=None):
         paginator = db.session.query(BaAdmin.id, BaAdmin.username, BaAdmin.nickname, BaAdmin.avatar, BaAdmin.email,
                                      BaAdmin.mobile, BaAdmin.last_login_time, BaAdmin.last_login_ip, BaAdmin.motto,
                                      BaAdmin.status, BaAdmin.update_time, BaAdmin.create_time) \
+            .filter(BaAdmin.username.like('%%%s%%' % name)) \
             .paginate(page=page, per_page=size, error_out=True)
         return paginator
 

@@ -1,7 +1,5 @@
 # _*_ coding: utf-8 _*_
-"""
-  Created by Allen7D on 2018/4/10.
-"""
+
 import time
 from contextlib import contextmanager
 from datetime import datetime

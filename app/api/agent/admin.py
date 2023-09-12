@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-from flask import Blueprint
+from flask import Blueprint, request
 from app.core.utils import jsonify
 from app.core.error import Success
 from app.core.utils import paginate
@@ -19,7 +19,8 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 def get_user_list():
     '''查询用户列表(分页)'''
     page, size = paginate()
-    rv = AdminDao.get_admin_list(page, size)
+    name = request.json.get('quickSearch')  # 可选
+    rv = AdminDao.get_admin_list(page, size, name=name)
     rv = AdminService.option_group_field(rv)
     return Success(rv)
 
@@ -68,7 +69,16 @@ def rule_list(id):
         query = BaAdminGroup.query.filter_by(id=id).first_or_404()
     else:
         query = query.all()
+    query = dict(query)
+    query['rules'] = query['rules'].split(',')
+    query = {"row": dict(query)}
     return Success(query)
+
+
+@admin.route('/auth_group', methods=['GET'])
+def auth_group():
+    '''查询角色组管理'''
+    return Success()
 
 
 @admin.route('/upload', methods=['POST'])

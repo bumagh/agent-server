@@ -1,15 +1,11 @@
 # _*_ coding: utf-8 _*_
-"""
-  Created by Allen7D on 2020/5/28.
-"""
+
 from collections import namedtuple
 
 from flask import request
 from wtforms import Form as WTForm
 
 from app.libs.error_code import ParameterException
-
-__author__ = 'Allen7D'
 
 
 class PropVelifyMixin(object):
