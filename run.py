@@ -5,5 +5,5 @@ app = create_app()
 
 if __name__ == "__main__":
     port = int(6666)
-    app.run(port=port, debug=True)
+    app.run(port=port, debug=False)
     # app.run(port=port)

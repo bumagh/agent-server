@@ -2,9 +2,9 @@
 """
   Created by Allen7D on 2018/4/10.
 """
+import time
 from contextlib import contextmanager
 from datetime import datetime
-from time import localtime, strftime
 
 from flask import current_app, json, request
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, Pagination as _Pagination, BaseQuery
@@ -100,6 +100,7 @@ class Query(BaseQuery):
                           paginator.items
                           )
 
+
 db = SQLAlchemy(query_class=Query)
 
 
@@ -157,7 +158,7 @@ class CRUDMixin(object):
 
     def delete(self, commit=True):
         '''软删除'''
-        self.delete_time = int(round(datetime.now().timestamp()))
+        self.delete_time = int(datetime.now)
         self.save()
         if commit:
             db.session.commit()
@@ -250,13 +251,11 @@ class BaseModel(CRUDMixin, AbortMixin, JSONSerializerMixin, db.Model):
     '''
     __abstract__ = True  # 这将使这个基类不生成实际的数据库表
 
-
     def delete(self, commit=True):
         '''删除'''
         db.session.delete(self)
         if commit:
             db.session.commit()
-
 
     def _set_fields(self):
         self._exclude = []
@@ -271,7 +270,8 @@ class EntityModel(CRUDMixin, AbortMixin, JSONSerializerMixin, db.Model):
 
     def __init__(self):
         # 时间戳
-        self.create_time = int(round(datetime.now().timestamp()))
+        self.create_time = int(time.time())
+        self.update_time = int(time.time())
 
     def _set_fields(self):
         self._exclude = ['create_time', 'update_time']

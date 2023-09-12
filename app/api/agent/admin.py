@@ -37,13 +37,13 @@ def get_user(uid):
 
 @admin.route('/add', methods=['POST'])
 def add_user():
-    form = CreateAdminValidator().get_data('type')
-    AdminDao.create_admin(form)
+    data = CreateAdminValidator().dt_data
+    AdminDao.create_admin(data)
     return Success()
 
 
 @admin.route('/del/<string:ids>', methods=['DELETE'])
-def del_user():
+def del_user(ids):
     '''删除用户信息'''
     ids = IDCollectionValidator().nt_data.ids
     AdminDao.delete_element(ids)

@@ -94,15 +94,12 @@ class TokenValidator(BaseValidator):
     token = StringField(validators=[DataRequired()])
 
 
-# 注册时，密码校验
+# 密码校验
 class CreatePasswordValidator(BaseValidator):
-    pass
-    # password = PasswordField('新密码', validators=[
-    #     DataRequired(message='新密码不可为空'),
-    #     Regexp(r'^[A-Za-z0-9_*&$#@]{6,22}$', message='密码长度必须在6~22位之间，包含字符、数字和 _ '),
-    #     EqualTo('confirm_password', message='两次输入的密码不一致，请输入相同的密码')
-    # ])
-    # confirm_password = PasswordField('确认新密码', validators=[DataRequired(message='请确认密码')])
+    password = PasswordField('新密码', validators=[
+        DataRequired(message='新密码不可为空'),
+        Regexp(r'^[A-Za-z0-9_*&$#@]{6,22}$', message='密码长度必须在6~22位之间，包含字符、数字和 _ ')
+    ])
 
 
 # 重置密码校验
@@ -162,6 +159,10 @@ class CreateAdminValidator(CreatePasswordValidator):
         Regexp(r'^1(3|4|5|7|8)[0-9]\d{8}$'),
         Optional()
     ])
+
+    username = StringField(validators=[DataRequired()])
+    avatar = StringField(validators=[DataRequired()])
+    status = StringField(validators=[DataRequired()])
 
 
 class UpdateAdminValidator(BaseValidator):

@@ -5,8 +5,6 @@
 from app.core.db import db
 from app.libs.enums import ClientTypeEnum
 from app.model.baAdmin import BaAdmin
-
-from app.dao.admin_group_access import AdminGroupAccessDao
 from app.model.baAdminGroupAccess import BaAdminGroupAccess
 
 
@@ -80,15 +78,10 @@ class AdminDao():
         # 删除字段
         if 'group_arr' in data_dict:
             del data_dict['group_arr']
-        new_user = BaAdmin(**data_dict)
-        db.session.add(new_user)
-        db.session.commit()
-        uid = new_user.id
+        admin_info = BaAdmin.create(**data_dict)
+        uid = admin_info.id
         for group_id in group_arr:
-            user_group_access = BaAdminGroupAccess(uid, group_id)
-            db.session.add(user_group_access)
-            db.session.commit()
-
+            BaAdminGroupAccess.create(uid=uid, group_id=group_id)
 
     # 获取用户列表
     @staticmethod
@@ -108,4 +101,4 @@ class AdminDao():
     def delete_element(ids):
         with db.auto_commit():
             BaAdmin.query.filter(BaAdmin.id.in_(ids)).delete()
-            BaAdminGroupAccess.filter(BaAdminGroupAccess.uid.in_(ids)).delete()
+            BaAdminGroupAccess.query.filter(BaAdminGroupAccess.uid.in_(ids)).delete()

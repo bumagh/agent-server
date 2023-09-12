@@ -3,7 +3,6 @@
   Created by Allen7D on 2020/4/9.
 """
 from collections import namedtuple
-
 from flask import current_app, request
 from flask.json import dumps
 
@@ -82,3 +81,15 @@ def get_request_args(as_dict= False):
         key: value for key, value in args_json.items() if value is not None
     }
     return data if as_dict else as_namedtuple(data)
+
+
+
+def generate_random_salt(length=16):
+    import random
+    import string
+    # 定义字符集，可以根据需要自定义
+    characters = string.ascii_letters + string.digits + string.punctuation
+    # 生成随机 salt，指定长度为 length
+    salt = ''.join(random.choice(characters) for _ in range(length))
+
+    return salt
