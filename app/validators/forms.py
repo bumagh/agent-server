@@ -139,7 +139,6 @@ class UpdateAvatarValidator(BaseValidator):
     ])
 
 
-########## 权限管理相关 ##########
 # 注册管理员校验
 class CreateAdminValidator(CreatePasswordValidator):
     nickname = StringField('昵称', validators=[
@@ -166,10 +165,27 @@ class CreateAdminValidator(CreatePasswordValidator):
 
 
 class UpdateAdminValidator(BaseValidator):
-    group_id = IntegerField('权限组id', validators=[
-        DataRequired(message='请输入分组id'),
-        NumberRange(min=1, message='分组id必须大于0')
+    id = IntegerField('id', validators=[
+        DataRequired(message='id不能为空'),
+        NumberRange(min=1, message='id必须大于0')
     ])
+    username = StringField()
+    avatar = StringField()
+    password = PasswordField()
+    nickname = StringField()
+    group_arr = FieldList(unbound_field=StringField(), min_entries=1)
+
+    email = StringField('电子邮件', validators=[
+        Regexp(r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$',
+               message='电子邮箱不符合规范，请输入正确的邮箱'),
+        Optional()
+    ])
+    mobile = StringField('手机号', validators=[
+        length(min=11, max=11, message='手机号为11个数字'),
+        Regexp(r'^1(3|4|5|7|8)[0-9]\d{8}$'),
+        Optional()
+    ])
+    status = StringField()
 
 
 # 管理员更新分组

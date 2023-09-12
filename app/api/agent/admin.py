@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-from flask import Blueprint, request
+from flask import Blueprint
 from app.core.utils import jsonify
 from app.core.error import Success
 from app.core.utils import paginate
@@ -10,7 +10,7 @@ from app.model.baAdmin import BaAdmin
 from app.model.baAdminGroup import BaAdminGroup
 from app.service.admin import AdminService
 from app.service.file import FileService
-from app.validators.forms import IDCollectionValidator, UploadFileValidator, CreateAdminValidator
+from app.validators.forms import IDCollectionValidator, UploadFileValidator, CreateAdminValidator, UpdateAdminValidator
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -32,13 +32,23 @@ def get_user(uid):
     user = jsonify(user)
     user['group_arr'] = groupid
     user['group_name_arr'] = groupname
-    return Success(user)
+    row = {"row": user}
+    return Success(row)
 
 
 @admin.route('/add', methods=['POST'])
 def add_user():
+    '''添加用户信息'''
     data = CreateAdminValidator().dt_data
     AdminDao.create_admin(data)
+    return Success()
+
+
+@admin.route('/update', methods=['POST'])
+def update_user():
+    '''修改用户信息'''
+    form = UpdateAdminValidator().nt_data
+    AdminDao.update_user(uid=form.id, form=form)
     return Success()
 
 

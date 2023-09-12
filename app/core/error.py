@@ -55,17 +55,17 @@ class Success(APIException):
     2/203: 删除成功
     '''
     code = 200
-    error_code = 0
+    error_code = 1
     data = None
     msg = '成功'
 
     def __init__(self, data=None, code=None, error_code=None, msg=None):
         if data:
             self.data = jsonify(data)
-        if error_code == 1:
+        if error_code == 2:
             code = code if code else 201
             msg = msg if msg else '创建 | 更新成功'
-        if error_code == 2:
+        if error_code == 3:
             code = code if code else 202
             msg = msg if msg else '删除成功'
         super(Success, self).__init__(code, error_code, msg)

@@ -15,8 +15,7 @@ from app.libs.enums import UrlFromEnum
 
 
 def on_update_time():
-    now = datetime.now
-    return int(round(now().timestamp()))
+    return int(time.time())
 
 
 class SQLAlchemy(_SQLAlchemy):
